@@ -19,7 +19,6 @@ combinacionGanadora=[]
 estrellasganadoras=[]
 millonganador=[]
 fecha=[]
-sdfsf
 
 
 ########## CÓDIGO ##########
