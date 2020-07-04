@@ -23,7 +23,7 @@ sdfsf
 
 
 ########## CÓDIGO ##########
-if len(numerosJugados)==0:   # Aquí se entra solamente si no están rellena la variable numerosJugados
+if len(numerosJugados)==0:   # Aquí se entra solamente si no está rellena la variable numerosJugados
     try:
         while len(numerosJugados)<=4:
             entrada=int(input("Introduce uno a uno los numeros que juegas: "))
@@ -122,7 +122,6 @@ class web:
     
 
 euromillon=web("https://www.euromillones.com.es/")
-
 euromillon.escaneoCombinacionGanadora()
 euromillon.estrellas()
 euromillon.millon()
