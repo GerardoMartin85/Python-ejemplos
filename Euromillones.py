@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import requests              
 #import urllib.request      
 
-print("asasd")
+
 ########## VARIABLES ##########
 numerosJugados=[]  # Variables que almacena los números jugados
 estrellasJugadas=[]          # Variables que almacena las estrellas jugadas
