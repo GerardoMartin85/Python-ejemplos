@@ -110,7 +110,7 @@ class web:
         texto=("###########################\nRESULTADO DIA: "+fecha[1]+"\nNumeros ganadores: "+str(combinacionGanadora)+" Numeros jugados:"+str(numerosJugados)+"\nACIERTOS: "+str(self.numerosComparados)+
         "\nEstrellas ganadoras: "+str(estrellasganadoras)+" Estrellas jugadas: "+str(estrellasJugadas)+
         "\nMillon ganador: "+millonganador[3]+" Millon jugado: "+millonJugado+"\n##################\n")   
-        registro=open("/volume1/Software/Mis aplicaciones/PYTHON Script Euromillones/resultados.txt","a") # Ruta por defecto del NAS: /volume1/Software/Mis aplicaciones/PYTHON Script Euromillones/resultados.txt
+        registro=open("/volume1/Software/Mis aplicaciones/PYTHON Script Euromillones/resultados.txt","a") # Ruta por defecto del NAS
         registro.write(texto)
         registro.close()
         
