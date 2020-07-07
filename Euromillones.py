@@ -8,9 +8,9 @@ import requests
 
 
 ########## VARIABLES ##########
-numerosJugados=[]  # Variables que almacena los números jugados
-estrellasJugadas=[]          # Variables que almacena las estrellas jugadas
-millonJugado="BWF61881"         # Variables que almacena el millon jugado
+numerosJugados=[17,20,22,41,50]  # Variables que almacena los números jugados
+estrellasJugadas=[1,9]          # Variables que almacena las estrellas jugadas
+millonJugado=["CFB91606"]        # Variables que almacena el millon jugado 
 
 url=""
 resultado=[]
@@ -21,17 +21,21 @@ millonganador=[]
 fecha=[]
 
 
+
 ########## CÓDIGO ##########
 if len(numerosJugados)==0:   # Aquí se entra solamente si no está rellena la variable numerosJugados
-    try:
-        while len(numerosJugados)<=4:
-            entrada=int(input("Introduce uno a uno los numeros que juegas: "))
+    while len(numerosJugados)<=4:
+        try:
+            entrada=int (input("Introduce uno a uno los numeros que juegas: "))
             numerosJugados.append(entrada)
-        while len(estrellasJugadas)<=1:
-            entrada=input("Introduce una a una las estrellas que juegas: ")
-            estrellasJugadas.append(int(entrada))
-    except:
-        print("Debe de ser un numero.")
+            while len(estrellasJugadas)<=1:
+                entrada=input("Introduce una a una las estrellas que juegas: ")
+                estrellasJugadas.append(int(entrada))
+        except:
+            print("Debe de ser un numero.")
+    
+
+
 
 
 class web:    
@@ -94,12 +98,11 @@ class web:
         print("RESULTADOS COINCIDENTES:",self.estrellasComparadas)
         print("")
         print("El millon ganador ha sido:",millonganador[3])
-        print("El millon jugado ha sido: ",millonJugado)
-        if millonganador == millonJugado:
+        print("El millon jugado ha sido: ",millonJugado[0])
+        if millonganador[3] == millonJugado[0]:
         	print('¡¡ HAS ACERTADO EL MILLON. !!')
         else:
         	print('NO HAS ACERTADO EL MILLON.')
-       
         print("")
         print("")
         print("Has tenido",len(self.numerosComparados),"numeros iguales y",len(self.estrellasComparadas),"estrellas iguales.")
@@ -109,8 +112,8 @@ class web:
     def registrar(self):
         texto=("###########################\nRESULTADO DIA: "+fecha[1]+"\nNumeros ganadores: "+str(combinacionGanadora)+" Numeros jugados:"+str(numerosJugados)+"\nACIERTOS: "+str(self.numerosComparados)+
         "\nEstrellas ganadoras: "+str(estrellasganadoras)+" Estrellas jugadas: "+str(estrellasJugadas)+
-        "\nMillon ganador: "+millonganador[3]+" Millon jugado: "+millonJugado+"\n##################\n")   
-        registro=open("/volume1/Software/Mis aplicaciones/PYTHON Script Euromillones/resultados.txt","a") # Ruta por defecto del NAS
+        "\nMillon ganador: "+millonganador[3]+" Millon jugado: "+millonJugado[0]+"\n##################\n")   
+        registro=open("/volume1/Software/Mis aplicaciones/PYTHON Script Euromillones/resultados.txt","a") # Ruta por defecto del NAS: /volume1/Software/Mis aplicaciones/PYTHON Script Euromillones/resultados.txt
         registro.write(texto)
         registro.close()
         
