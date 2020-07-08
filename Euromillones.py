@@ -1,52 +1,58 @@
-""" Script que automaticamente obtiene el premio del Euromillon y lo compara con el del usuario indicando resultado y premio/s, elaborado por Gerardo Martín, Julio 2020, obtiene los datos desde https://www.euromillones.com.es/ """
+""" Script que automaticamente obtiene el premio del Euromillon y lo compara con el del usuario indicando resultado y premio/s, elaborado por Gerardo Martín, Julio 2020"""
 # coding: utf-8
 import re
 import time
 from bs4 import BeautifulSoup
 import requests              
-#import urllib.request      
+import time
 
 
 ########## VARIABLES ##########
-numerosJugados=[17,20,22,41,50]  # Variables que almacena los números jugados
-estrellasJugadas=[1,9]          # Variables que almacena las estrellas jugadas
-millonJugado=["CFB91606"]        # Variables que almacena el millon jugado 
-
+numerosJugados=[17,20,22,41,50]  # Variable que almacena los números jugados 
+estrellasJugadas=[1,9]           # Variable que almacena las estrellas jugadas
+millonJugado=["CFB91606"]        # Variable que almacena el millon jugado  
 url=""
 resultado=[]
-
 combinacionGanadora=[]
 estrellasganadoras=[]
 millonganador=[]
 fecha=[]
 
 
-
 ########## CÓDIGO ##########
 if len(numerosJugados)==0:   # Aquí se entra solamente si no está rellena la variable numerosJugados
     while len(numerosJugados)<=4:
         try:
-            entrada=int (input("Introduce uno a uno los numeros que juegas: "))
+            entrada=int (input("Introduce uno de los numeros que juegas y pulsa intro: "))
             numerosJugados.append(entrada)
             while len(estrellasJugadas)<=1:
-                entrada=input("Introduce una a una las estrellas que juegas: ")
+                entrada=input("Introduce una de las estrellas que juegas y pulsa intro: ")
                 estrellasJugadas.append(int(entrada))
         except:
             print("Debe de ser un numero.")
-    
-
-
+    millonJugado=input("Introduce el codigo del millon jugado: ").upper()  
+    print(millonJugado)
 
 
 class web:    
     """ Se han separado cada elemento a buscar dependiendo de su nombre de clase en la web, cada elemento una vez limpiado con re es guardado en su lista correspondiente
     y comparado con su variable de elemento jugada correspondiente """
-    
-
     def __init__(self,url):
-        self.url=requests.get(url)
-        self.data=self.url.text
-        self.soup=BeautifulSoup(self.data,features="html.parser")
+        self.contador=0
+        while self.contador<=5:
+        	try:
+        		self.url=requests.get(url)
+        		self.data=self.url.text
+        		self.soup=BeautifulSoup(self.data,features="html.parser")
+        		print('Conexion establecida.')
+        		self.contador=1
+        		break
+        	except:
+        		print('Intento',self.contador,'de conexion fallido.')
+        		self.contador=self.contador+1
+        		time.sleep(1)
+        		if self.contador==6:
+        			print('Proceso cerrado despues de 5 intentos.')
 
 
     def limpiaHtml(self,link):
@@ -61,19 +67,19 @@ class web:
         for link in self.soup.find_all(class_="numeros"):
             resultado=self.limpiaHtml(link)
             combinacionGanadora.append(int(self.resultado))
-            
+
 
     def estrellas(self): # OJO esta función devuelve una lista y en la función print seleccionamos el index 3
        for link in self.soup.find_all(class_="estrellas"):
             resultado=self.limpiaHtml(link)  
             estrellasganadoras.append(int(self.resultado))
-            
+
 
     def millon(self):
         for link in self.soup.find_all("span"):
             resultado=self.limpiaHtml(link)
             millonganador.append(self.resultado)
-            
+
             
     def fechaSorteo(self):
         for link in self.soup.find("h4"):
@@ -98,8 +104,8 @@ class web:
         print("RESULTADOS COINCIDENTES:",self.estrellasComparadas)
         print("")
         print("El millon ganador ha sido:",millonganador[3])
-        print("El millon jugado ha sido: ",millonJugado[0])
-        if millonganador[3] == millonJugado[0]:
+        print("El millon jugado ha sido: ",millonJugado[0:8])
+        if millonganador[3] == millonJugado[0:8]:
         	print('¡¡ HAS ACERTADO EL MILLON. !!')
         else:
         	print('NO HAS ACERTADO EL MILLON.')
@@ -119,16 +125,16 @@ class web:
         
     
     def __del__(self): # Destructor de clase
-        print('Limpiando memoria...')
+        print('Limpiando memoria temporal...')
 
     
 
 euromillon=web("https://www.euromillones.com.es/")
-euromillon.escaneoCombinacionGanadora()
-euromillon.estrellas()
-euromillon.millon()
-euromillon.fechaSorteo()
-euromillon.calculos()
-euromillon.comprobar_premio()
-euromillon.registrar()
-del euromillon
+if euromillon.contador==1: # Accedemos a variable de clase para comprobar su estado
+	euromillon.escaneoCombinacionGanadora()
+	euromillon.estrellas()
+	euromillon.millon()
+	euromillon.fechaSorteo()
+	euromillon.calculos()
+	euromillon.comprobar_premio()
+	euromillon.registrar()
