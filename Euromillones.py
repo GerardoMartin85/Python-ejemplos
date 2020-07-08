@@ -8,9 +8,9 @@ import time
 
 
 ########## VARIABLES ##########
-numerosJugados=[17,20,22,41,50]  # Variable que almacena los números jugados 
-estrellasJugadas=[1,9]           # Variable que almacena las estrellas jugadas
-millonJugado=["CFB91606"]        # Variable que almacena el millon jugado  
+numerosJugados=[]  # Variable que almacena los números jugados 
+estrellasJugadas=[]           # Variable que almacena las estrellas jugadas
+millonJugado=[""]        # Variable que almacena el millon jugado  
 url=""
 resultado=[]
 combinacionGanadora=[]
@@ -119,7 +119,7 @@ class web:
         texto=("###########################\nRESULTADO DIA: "+fecha[1]+"\nNumeros ganadores: "+str(combinacionGanadora)+" Numeros jugados:"+str(numerosJugados)+"\nACIERTOS: "+str(self.numerosComparados)+
         "\nEstrellas ganadoras: "+str(estrellasganadoras)+" Estrellas jugadas: "+str(estrellasJugadas)+
         "\nMillon ganador: "+millonganador[3]+" Millon jugado: "+millonJugado[0]+"\n##################\n")   
-        registro=open("/volume1/Software/Mis aplicaciones/PYTHON Script Euromillones/resultados.txt","a") # Ruta por defecto del NAS: /volume1/Software/Mis aplicaciones/PYTHON Script Euromillones/resultados.txt
+        registro=open("/volume1/Software/Mis aplicaciones/PYTHON Script Euromillones/resultados.txt","a")
         registro.write(texto)
         registro.close()
         
