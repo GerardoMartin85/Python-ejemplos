@@ -8,11 +8,10 @@ import time
 
 
 ########## VARIABLES ##########
-numerosJugados=[]  # Variable que almacena los números jugados 
-estrellasJugadas=[]           # Variable que almacena las estrellas jugadas
-millonJugado=[""]        # Variable que almacena el millon jugado  
+numerosJugados=[17,20,22,41,50]  # Variable que almacena los números jugados 
+estrellasJugadas=[1,9]           # Variable que almacena las estrellas jugadas
+millonJugado=["CFB91606"]        # Variable que almacena el millon jugado  
 url=""
-resultado=[]
 combinacionGanadora=[]
 estrellasganadoras=[]
 millonganador=[]
@@ -31,7 +30,7 @@ if len(numerosJugados)==0:   # Aquí se entra solamente si no está rellena la v
         except:
             print("Debe de ser un numero.")
     millonJugado=input("Introduce el codigo del millon jugado: ").upper()  
-    print(millonJugado)
+    
 
 
 class web:    
@@ -58,26 +57,26 @@ class web:
     def limpiaHtml(self,link):
         """Función que por parametro admite una variable que será limpiada de código de HTML <>/..."""
         self.resultado=re.sub(r"<.*?>","",str(link))
-        return resultado
+        return self.resultado
 
 
     def escaneoCombinacionGanadora(self):
         """ Este método se usa para obtener los 5 números ganadores desde la web, se obtienen en base a su nombre de clase, se le elimiman caracteres tipicos de HTML,
         y se añade a la lista correspondiente para luego en otro método ser comparada con los numeros jugados por el usuario """
         for link in self.soup.find_all(class_="numeros"):
-            resultado=self.limpiaHtml(link)
+            self.resultado=self.limpiaHtml(link)
             combinacionGanadora.append(int(self.resultado))
 
 
     def estrellas(self): # OJO esta función devuelve una lista y en la función print seleccionamos el index 3
        for link in self.soup.find_all(class_="estrellas"):
-            resultado=self.limpiaHtml(link)  
+            self.resultado=self.limpiaHtml(link)  
             estrellasganadoras.append(int(self.resultado))
 
 
     def millon(self):
         for link in self.soup.find_all("span"):
-            resultado=self.limpiaHtml(link)
+            self.resultado=self.limpiaHtml(link)
             millonganador.append(self.resultado)
 
             
@@ -94,23 +93,24 @@ class web:
 
     def comprobar_premio(self):
         print("###########################################################################")
-        print("Sorteo celebrado el dia:",fecha[1])
-        print("Los numeros ganadores han sido:",combinacionGanadora)
-        print("Los numeros jugados han sido:  ",numerosJugados)
-        print("RESULTADOS COINCIDENTES:",self.numerosComparados)  
-        print("")
-        print("Las estrellas ganadoras han sido:",estrellasganadoras)
-        print("Las estrellas jugadas han sido:  ",estrellasJugadas)
-        print("RESULTADOS COINCIDENTES:",self.estrellasComparadas)
-        print("")
-        print("El millon ganador ha sido:",millonganador[3])
-        print("El millon jugado ha sido: ",millonJugado[0:8])
-        if millonganador[3] == millonJugado[0:8]:
-        	print('¡¡ HAS ACERTADO EL MILLON. !!')
+        print("""Sorteo celebrado el dia:""",fecha[1],
+              """\nLos numeros ganadores han sido:""",combinacionGanadora,
+              """\nLos numeros jugados han sido:  """,numerosJugados,
+              """\nRESULTADOS COINCIDENTES:""",self.numerosComparados,
+              """\n""")  
+        
+        print("""Las estrellas ganadoras han sido:""",estrellasganadoras,
+              """\nLas estrellas jugadas han sido:  """,estrellasJugadas,
+              """\nRESULTADOS COINCIDENTES:""",self.estrellasComparadas,
+              """\n""") 
+
+        print("""El millon ganador ha sido:""",millonganador[3],
+              """\nEl millon jugado ha sido: """,millonJugado[0])
+        if millonganador[3] == millonJugado[0]:
+        	print('¡¡ HAS ACERTADO EL MILLON !!\n\n')
         else:
-        	print('NO HAS ACERTADO EL MILLON.')
-        print("")
-        print("")
+        	print('NO HAS ACERTADO EL MILLON.\n\n')
+       
         print("Has tenido",len(self.numerosComparados),"numeros iguales y",len(self.estrellasComparadas),"estrellas iguales.")
         print("###########################################################################")
 
@@ -119,7 +119,7 @@ class web:
         texto=("###########################\nRESULTADO DIA: "+fecha[1]+"\nNumeros ganadores: "+str(combinacionGanadora)+" Numeros jugados:"+str(numerosJugados)+"\nACIERTOS: "+str(self.numerosComparados)+
         "\nEstrellas ganadoras: "+str(estrellasganadoras)+" Estrellas jugadas: "+str(estrellasJugadas)+
         "\nMillon ganador: "+millonganador[3]+" Millon jugado: "+millonJugado[0]+"\n##################\n")   
-        registro=open("/volume1/Software/Mis aplicaciones/PYTHON Script Euromillones/resultados.txt","a")
+        registro=open("/volume1/Software/Mis aplicaciones/PYTHON Script Euromillones/resultados.txt","a") # Ruta por defecto del NAS: /volume1/Software/Mis aplicaciones/PYTHON Script Euromillones/resultados.txt
         registro.write(texto)
         registro.close()
         
@@ -131,7 +131,7 @@ class web:
 
 euromillon=web("https://www.euromillones.com.es/")
 if euromillon.contador==1: # Accedemos a variable de clase para comprobar su estado
-	euromillon.escaneoCombinacionGanadora()
+	euromillon.escaneoCombinacionGanadora() # Iniciamos demás operaciones
 	euromillon.estrellas()
 	euromillon.millon()
 	euromillon.fechaSorteo()
