@@ -117,9 +117,9 @@ class web:
 
 
     def registrar(self):
-        texto=("###########################\nRESULTADO DIA: "+fecha[1]+"\nNumeros ganadores: "+str(combinacionGanadora)+" Numeros jugados:"+str(numerosJugados)+"\nACIERTOS: "+str(self.numerosComparados)+
-        "\nEstrellas ganadoras: "+str(estrellasganadoras)+" Estrellas jugadas: "+str(estrellasJugadas)+
-        "\nMillon ganador: "+millonganador[3]+" Millon jugado: "+millonJugado[0]+"\n##################\n")   
+        texto=("###########################\nRESULTADO DIA: "+self.fecha[1]+"\nNumeros ganadores: "+str(self.combinacionGanadora)+" Numeros jugados:"+str(numerosJugados)+"\nACIERTOS: "+str(self.numerosComparados)+
+        "\nEstrellas ganadoras: "+str(self.estrellasganadoras)+" Estrellas jugadas: "+str(estrellasJugadas)+
+        "\nMillon ganador: "+self.millonganador[3]+" Millon jugado: "+millonJugado[0]+"\n##################\n")   
         registro=open("/volume1/Software/Mis aplicaciones/PYTHON Script Euromillones/resultados.txt","a") # Ruta por defecto del NAS: /volume1/Software/Mis aplicaciones/PYTHON Script Euromillones/resultados.txt
         registro.write(texto)
         registro.close()
@@ -138,4 +138,4 @@ if euromillon.contador==1: # Accedemos a variable de clase para comprobar su est
 	euromillon.fechaSorteo()
 	euromillon.calculos()
 	euromillon.comprobar_premio()
-	euromillon.registrar()
+	#euromillon.registrar()
