@@ -1,5 +1,6 @@
-""" Script que automaticamente obtiene el premio del Euromillon y lo compara con el del usuario indicando resultado y premio/s, elaborado por Gerardo Martín, Julio 2020"""
-# coding: utf-8
+""" Script que automaticamente obtiene el premio del Euromillón y lo compara con el del usuario indicando resultado y premio/s, elaborado por Gerardo Martín, Julio 2020"""
+# -*- coding: utf-8 -*-
+
 import re
 import time
 from bs4 import BeautifulSoup
@@ -12,10 +13,6 @@ numerosJugados=[17,20,22,41,50]  # Variable que almacena los números jugados
 estrellasJugadas=[1,9]           # Variable que almacena las estrellas jugadas
 millonJugado=["CFB91606"]        # Variable que almacena el millon jugado  
 url=""
-combinacionGanadora=[]
-estrellasganadoras=[]
-millonganador=[]
-fecha=[]
 
 
 ########## CÓDIGO ##########
@@ -29,7 +26,7 @@ if len(numerosJugados)==0:   # Aquí se entra solamente si no está rellena la v
                 estrellasJugadas.append(int(entrada))
         except:
             print("Debe de ser un numero.")
-    millonJugado=input("Introduce el codigo del millon jugado: ").upper()  
+    millonJugado=input("Introduce el código del millón jugado: ").upper()  
     
 
 
@@ -38,20 +35,24 @@ class web:
     y comparado con su variable de elemento jugada correspondiente """
     def __init__(self,url):
         self.contador=0
+        self.combinacionGanadora=[]
+        self.estrellasganadoras=[]
+        self.millonganador=[]
+        self.fecha=[]
         while self.contador<=5:
         	try:
         		self.url=requests.get(url)
         		self.data=self.url.text
         		self.soup=BeautifulSoup(self.data,features="html.parser")
-        		print('Conexion establecida.')
+        		print('Conexión establecida.')
         		self.contador=1
         		break
         	except:
-        		print('Intento',self.contador,'de conexion fallido.')
+        		print('Intento',self.contador,'de conexión fallido.')
         		self.contador=self.contador+1
         		time.sleep(1)
         		if self.contador==6:
-        			print('Proceso cerrado despues de 5 intentos.')
+        			print('Proceso cerrado después de 5 intentos.')
 
 
     def limpiaHtml(self,link):
@@ -65,51 +66,51 @@ class web:
         y se añade a la lista correspondiente para luego en otro método ser comparada con los numeros jugados por el usuario """
         for link in self.soup.find_all(class_="numeros"):
             self.resultado=self.limpiaHtml(link)
-            combinacionGanadora.append(int(self.resultado))
+            self.combinacionGanadora.append(int(self.resultado))
 
 
     def estrellas(self): # OJO esta función devuelve una lista y en la función print seleccionamos el index 3
        for link in self.soup.find_all(class_="estrellas"):
             self.resultado=self.limpiaHtml(link)  
-            estrellasganadoras.append(int(self.resultado))
+            self.estrellasganadoras.append(int(self.resultado))
 
 
     def millon(self):
         for link in self.soup.find_all("span"):
             self.resultado=self.limpiaHtml(link)
-            millonganador.append(self.resultado)
+            self.millonganador.append(self.resultado)
 
             
     def fechaSorteo(self):
         for link in self.soup.find("h4"):
             self.limpiado=re.sub(r"<.*?>","",str(link))
-            fecha.append(self.limpiado) 
+            self.fecha.append(self.limpiado) 
     
 
     def calculos(self):
-        self.numerosComparados=set(combinacionGanadora) & set(numerosJugados)    # Comparación de ambas variables buscando coincidencias
-        self.estrellasComparadas=set(estrellasganadoras) & set(estrellasJugadas) # Comparación de ambas variables buscando coincidencias
+        self.numerosComparados=set(self.combinacionGanadora) & set(numerosJugados)    # Comparación de ambas variables buscando coincidencias
+        self.estrellasComparadas=set(self.estrellasganadoras) & set(estrellasJugadas) # Comparación de ambas variables buscando coincidencias
 
 
     def comprobar_premio(self):
         print("###########################################################################")
-        print("""Sorteo celebrado el dia:""",fecha[1],
-              """\nLos numeros ganadores han sido:""",combinacionGanadora,
-              """\nLos numeros jugados han sido:  """,numerosJugados,
+        print("""Sorteo celebrado el dia:""",self.fecha[1],
+              """\nLos números ganadores han sido:""",self.combinacionGanadora,
+              """\nLos números jugados han sido:  """,numerosJugados,
               """\nRESULTADOS COINCIDENTES:""",self.numerosComparados,
-              """\n""")  
+              "\n")  
         
-        print("""Las estrellas ganadoras han sido:""",estrellasganadoras,
+        print("""Las estrellas ganadoras han sido:""",self.estrellasganadoras,
               """\nLas estrellas jugadas han sido:  """,estrellasJugadas,
               """\nRESULTADOS COINCIDENTES:""",self.estrellasComparadas,
-              """\n""") 
+              "\n") 
 
-        print("""El millon ganador ha sido:""",millonganador[3],
-              """\nEl millon jugado ha sido: """,millonJugado[0])
-        if millonganador[3] == millonJugado[0]:
-        	print('¡¡ HAS ACERTADO EL MILLON !!\n\n')
+        print("""El millón ganador ha sido:""",self.millonganador[3],
+              """\nEl millón jugado ha sido: """,millonJugado[0])
+        if self.millonganador[3] == millonJugado[0]:
+        	print('¡¡ HAS ACERTADO EL MILLÓN !!\n\n')
         else:
-        	print('NO HAS ACERTADO EL MILLON.\n\n')
+        	print('NO HAS ACERTADO EL MILLÓN.\n\n')
        
         print("Has tenido",len(self.numerosComparados),"numeros iguales y",len(self.estrellasComparadas),"estrellas iguales.")
         print("###########################################################################")
